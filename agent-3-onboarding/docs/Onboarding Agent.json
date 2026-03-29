@@ -1,0 +1,851 @@
+{
+  "name": "Onboarding Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s",
+          "mode": "list",
+          "cachedResultName": "Agent CV_Filter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        96
+      ],
+      "id": "fe0628ef-960a-4dc5-b9cb-8e9e053f1397",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "zMvkHF49ufkZhF6h",
+          "name": "Google Sheets Trigger OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "eacc0c8a-10e8-4a9d-b31f-f9a1a669ecef",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "active",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        176,
+        96
+      ],
+      "id": "4f615df5-1b84-4322-9d84-6c85a8977bca",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s",
+          "mode": "list",
+          "cachedResultName": "Agent CV_Filter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Active since": "={{ $now.toISO() }}",
+            "Email": "={{ $('Google Sheets Trigger').item.json.Email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Contact Number",
+              "displayName": "Contact Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Linkedin",
+              "displayName": "Linkedin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Position",
+              "displayName": "Position",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Education",
+              "displayName": "Education",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Courses",
+              "displayName": "Courses",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Exp",
+              "displayName": "Exp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Score",
+              "displayName": "Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "3 Questions for candidate",
+              "displayName": "3 Questions for candidate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Active since",
+              "displayName": "Active since",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        384,
+        0
+      ],
+      "id": "b1cfe676-75e6-43ea-8435-77be04af8081",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "veeoqIRWy3rH2jWF",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Google Sheets Trigger').item.json.Email }}",
+        "subject": "=Welcome to the team, {{ $('Google Sheets Trigger').item.json.Name }}!",
+        "emailType": "text",
+        "message": "=Hi {{ $('Google Sheets Trigger').item.json.Name }},\n\nWe're thrilled to welcome you to the team as {{ $('Google Sheets Trigger').item.json.Position }}!\n\nHere's what happens next:\n- You'll receive a calendar invite for your first day shortly\n- Your manager will reach out to introduce themselves\n- Our HR team is available for any questions\n\nWe're looking forward to having you on board!\n\nBest regards,\nHR Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        0
+      ],
+      "id": "e8eaf6ab-1207-43e1-be9b-9ee48d986c4a",
+      "name": "Send a message",
+      "webhookId": "bad872bc-4bdb-4b55-8296-e11269219d18",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "uDXojCsFO2Jpk1c7",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0APKDKLATU",
+          "mode": "list",
+          "cachedResultName": "hr-channel"
+        },
+        "text": "=*New hire alert!*\n\n*Name:* {{ $('Google Sheets Trigger').item.json.Name }}\n*Position:* {{ $('Google Sheets Trigger').item.json.Position }}\n*Email:* {{ $('Google Sheets Trigger').item.json.Email }}\n*Start date:* tomorrow 10:00 AM\n\n*Action items:*\n- HR — prepare onboarding checklist\n- Manager — send welcome message\n- IT — set up accounts and equipment\n\n*Candidate sheet:* <https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABIn0E4OS21F5s|Link>\n\n*Onboarding checklist:* <https://docs.google.com/document/d/{{ $('Create a document').item.json.id }}|Link>",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1376,
+        0
+      ],
+      "id": "eed5af6f-be80-45bd-80bf-af776940bb2f",
+      "name": "Send a message1",
+      "webhookId": "7b039b7f-3116-4b7a-9a68-2657801d31d1",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "70Chx70mFkeqkXHG",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "folderId": "default",
+        "title": "=Onboarding — {{ $('Google Sheets Trigger').item.json.Name }} ({{ $('Google Sheets Trigger').item.json.Position }})"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        784,
+        0
+      ],
+      "id": "80555319-4cbb-4622-9691-42ff6e642ab3",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "aqhhJy8ETNMqURkJ",
+          "name": "Google Docs OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ \"ONBOARDING CHECKLIST\\n\\nCandidate: \" + $('Google Sheets Trigger').item.json.Name + \"\\nPosition: \" + $('Google Sheets Trigger').item.json.Position + \"\\nEmail: \" + $('Google Sheets Trigger').item.json.Email + \"\\n\\nDAY 0 — HR\\n☐ Send welcome email\\n☐ Prepare employment contract\\n☐ Set up payroll\\n☐ Order equipment\\n\\nDAY 0 — IT\\n☐ Create company email account\\n☐ Set up Slack access\\n☐ Set up Google Workspace\\n☐ Prepare laptop\\n\\nDAY 0 — MANAGER\\n☐ Send personal welcome message\\n☐ Plan first week schedule\\n☐ Assign onboarding buddy\\n\\nDAY 7\\n☐ Check-in meeting with new hire\\n☐ Collect first week feedback\\n☐ Review onboarding survey results\\n\\nDAY 30\\n☐ 30-day review meeting\\n☐ Set 60/90 day goals\\n☐ Confirm probation period status\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        992,
+        0
+      ],
+      "id": "fe4cb359-9019-444f-898c-4a704f7c4efa",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "aqhhJy8ETNMqURkJ",
+          "name": "Google Docs OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "lewayzgc@gmail.com",
+          "mode": "list",
+          "cachedResultName": "lewayzgc@gmail.com"
+        },
+        "start": "={{ $now.plus(1, 'day').startOf('day').plus(9, 'hours').toISO() }}",
+        "end": "={{ $now.plus(1, 'day').startOf('day').plus(10, 'hours').toISO() }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $('Google Sheets Trigger').item.json.Email }}"
+          ],
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "=Welcome meeting with {{ $('Google Sheets Trigger').item.json.Name }}.\n\nPosition: {{ $('Google Sheets Trigger').item.json.Position }}\nEmail: {{ $('Google Sheets Trigger').item.json.Email }}",
+          "summary": "=First day — {{ $('Google Sheets Trigger').item.json.Name }} ({{ $('Google Sheets Trigger').item.json.Position }})"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        0
+      ],
+      "id": "ee534ed7-1df5-492f-bb44-f19a1412b106",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DPffnCmgJmRhEgR1",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        -416
+      ],
+      "id": "eb610221-2efb-4874-b798-0907b1f736a4",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s",
+          "mode": "list",
+          "cachedResultName": "Agent CV_Filter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "active"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        -416
+      ],
+      "id": "afc8ec0b-b148-4a07-bd3d-b8b78107952c",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "veeoqIRWy3rH2jWF",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst today = new Date();\nconst result = [];\n\nfor (const item of items) {\n  const activeSince = new Date(item.json.active_since);\n  const diffDays = Math.floor((today - activeSince) / (1000 * 60 * 60 * 24));\n  \n  if (diffDays === 7 || diffDays === 30) {\n    result.push({\n      json: {\n        ...item.json,\n        day_number: diffDays\n      }\n    });\n  }\n}\n\nreturn result.length > 0 ? result : [{ json: { skip: true } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        -416
+      ],
+      "id": "fa0fc6e6-2263-436e-8d60-08b52b61a18f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.day_number }}",
+                    "rightValue": "7",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "15235ec6-8c37-479f-be8a-810347a12ac1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Day 7"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "28bada98-3a2a-47ba-9c30-53a0febc5293",
+                    "leftValue": "={{ $json.day_number }}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Day 30"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        -416
+      ],
+      "id": "426e1e1a-c6db-4f22-b462-aa185026f0bb",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "=How's your first week going, {{ $json.Name }}?",
+        "emailType": "text",
+        "message": "=Hi {{ $json.Name }},  You've been with us for a week now, time flies!  We'd love to hear how your first week has been. Please take 2 minutes to fill out our onboarding survey:  [link do Google Forms — dodamy później]  If you have any questions or need anything, don't hesitate to reach out.  Best regards, HR Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -512
+      ],
+      "id": "2f16adf6-af28-4543-ac5b-f81ce15984fc",
+      "name": "Send a message2",
+      "webhookId": "64c14575-5a4c-4b0b-8d64-0827a19666ad",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "uDXojCsFO2Jpk1c7",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U0A36PAL7M2",
+          "mode": "list",
+          "cachedResultName": "horgatai"
+        },
+        "text": "=*Day 7 check-in sent!*  \n\n*Employee:* {{ $json.Name }} \n\n*Position:* {{ $json.Position }} \n\n*Action:* Schedule a 1:1 meeting this week if you haven't already.",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1040,
+        -512
+      ],
+      "id": "00bc4ddc-fc83-4113-98b0-a0b3fd03d196",
+      "name": "Send a message3",
+      "webhookId": "3f192ecb-4823-4d33-8c2f-697466b8ee18",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "70Chx70mFkeqkXHG",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "=Your first month with us, {{ $json.Name }}!",
+        "emailType": "text",
+        "message": "=Hi {{ $json.Name }},  It's been 30 days since you joined us as {{ $json.Position }} - congratulations on completing your first month!  \n\nWe'd love to hear how your onboarding experience has been. Please take 5 minutes to share your feedback:  [link do Google Forms — dodamy później]  Your feedback helps us improve the onboarding experience for future team members.  Looking forward to many more months together!  \n\nBest regards, HR Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -320
+      ],
+      "id": "7383cabc-1129-4807-8e8d-443d5f48c4f2",
+      "name": "Send a message4",
+      "webhookId": "80ccf7cb-5e9e-49a8-a458-9cff18ca5421",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "uDXojCsFO2Jpk1c7",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U0A36PAL7M2",
+          "mode": "list",
+          "cachedResultName": "horgatai"
+        },
+        "text": "=*Day 30 review reminder!*  \n\n*Employee:* {{ $json.Name }} \n\n*Position:* {{ $json.Position }} \n\n*Action items:* - Schedule 30-day review meeting - Set 60/90 day goals - Confirm probation period status",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1040,
+        -320
+      ],
+      "id": "d98ed78c-403a-4cb4-b708-9bd073d096e8",
+      "name": "Send a message5",
+      "webhookId": "079797bc-c882-4b6e-959b-115197bf141d",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "70Chx70mFkeqkXHG",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 7&30 days scheduled checker for an automated follow-up",
+        "height": 432,
+        "width": 1280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -48,
+        -592
+      ],
+      "typeVersion": 1,
+      "id": "fea6fce7-ff08-4649-84aa-ed5ee4677bb9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "##  ONB",
+        "height": 304,
+        "width": 1632,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -48,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "1679cfac-d058-4191-95d1-93376b839294",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        []
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message2": {
+      "main": [
+        [
+          {
+            "node": "Send a message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message4": {
+      "main": [
+        [
+          {
+            "node": "Send a message5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ad725623-1058-49c7-bfeb-5df8a1a02cf4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4e8b59142df5dea7e7a6c4c7d70da13b20fdd6bf079477c755fdac10fe41a2f3"
+  },
+  "id": "FeKfhN3xJgwhyJiM",
+  "tags": []
+}
