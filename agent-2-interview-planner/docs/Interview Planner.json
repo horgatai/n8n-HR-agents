@@ -1,0 +1,341 @@
+{
+  "name": "Interview Planner",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s",
+          "mode": "list",
+          "cachedResultName": "Agent CV_Filter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABln0E4OS21F5s/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8f456135-1688-4373-af01-93fa26669de1",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "zMvkHF49ufkZhF6h",
+          "name": "Google Sheets Trigger OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "93f2db3d-4d38-4d03-b3cb-8c3d2db6c145",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "interview",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "4b3a707d-79a4-435c-9369-39b8c73c8380",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an expert HR interviewer. Based on the candidate data provided, create a structured interview plan in English. Return ONLY a JSON object in this exact format:\n\n{\n  \"candidate_name\": \"\",\n  \"position\": \"\",\n  \"interview_duration_minutes\": 60,\n  \"structure\": [\n    {\"block\": \"Introduction\", \"duration_minutes\": 5, \"notes\": \"\"},\n    {\"block\": \"Experience review\", \"duration_minutes\": 15, \"notes\": \"\"},\n    {\"block\": \"Technical/Skills\", \"duration_minutes\": 20, \"notes\": \"\"},\n    {\"block\": \"Motivation & Culture fit\", \"duration_minutes\": 10, \"notes\": \"\"},\n    {\"block\": \"Candidate questions\", \"duration_minutes\": 10, \"notes\": \"\"}\n  ],\n  \"key_questions\": [],\n  \"red_flags_to_check\": [],\n  \"recruiter_notes\": \"\"\n}"
+            },
+            {
+              "content": "={{ \"Name: \" + $json.Name + \"\\nPosition: \" + $json.Position + \"\\nExperience: \" + $json.Exp + \" years\\nScore: \" + $json.Score + \"\\nSummary: \" + $json.Summary + \"\\n3 Questions already prepared: \" + $json[\"3 Questions for candidate\"] }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        416,
+        -96
+      ],
+      "id": "4e5b8d6b-ae69-44c4-9175-27071a856b07",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "WuzaalBwDyKynqlh",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.item.json.output[0].content[0].text;\nconst parsed = JSON.parse(raw);\nreturn { json: parsed };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        -96
+      ],
+      "id": "cff34a28-4b58-4829-af0e-dbc407a4fc37",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U0A36PAL7M2",
+          "mode": "list",
+          "cachedResultName": "horgatai"
+        },
+        "text": "=_________________________________________________________________\n\n*Interview plan ready!*  \n\n*Candidate:* {{ $('Google Sheets Trigger').item.json.Name }}\n*Position:* {{ $('Google Sheets Trigger').item.json.Position }}\n\n*Recruiter brief:* <https://docs.google.com/document/d/{{ $('Create a document').item.json.id }}|Link>\n*Calendar event:* <{{ $('Create an event').item.json.htmlLink }}|Link>\n*Sheet:* <https://docs.google.com/spreadsheets/d/1Dhg3pdgbLxasHKVs9tV6MUohH59WFABIn0E4OS21F5s|Link>\n",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        1552,
+        -96
+      ],
+      "id": "f0d7df12-2ccd-4a76-937b-1baf28d7751e",
+      "name": "Send a message",
+      "webhookId": "6dff6a8a-1db1-4621-8b80-cea04108a164",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "70Chx70mFkeqkXHG",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "lewayzgc@gmail.com",
+          "mode": "list",
+          "cachedResultName": "lewayzgc@gmail.com"
+        },
+        "start": "={{ $now.plus(1, 'day').startOf('day').plus(10, 'hours').toISO() }}",
+        "end": "={{ $now.plus(1, 'day').startOf('day').plus(11, 'hours').toISO() }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $('Google Sheets Trigger').item.json.Email }}"
+          ],
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "={{ $('Code in JavaScript').item.json.candidate_name }} — {{ $('Code in JavaScript').item.json.position }}\nInterview duration: {{ $('Code in JavaScript').item.json.interview_duration_minutes }} minutes",
+          "summary": "=Interview — {{ $('Code in JavaScript').item.json.candidate_name }} ({{ $('Code in JavaScript').item.json.position }})"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        960,
+        -96
+      ],
+      "id": "7c4b678a-a37b-42a1-ad91-00c471bb95ea",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DPffnCmgJmRhEgR1",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "folderId": "default",
+        "title": "=#jobrec{{ $('Google Sheets Trigger').item.json.row_number || '01' }} — {{ $('Code in JavaScript').item.json.candidate_name }} ({{ $('Code in JavaScript').item.json.position }})"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        -96
+      ],
+      "id": "bc7f11b6-000a-4a2c-a3f9-c5ccee7b17e6",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "aqhhJy8ETNMqURkJ",
+          "name": "Google Docs OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ \"RECRUITER BRIEF\\n\\nCandidate: \" + $('Code in JavaScript').item.json.candidate_name + \"\\nPosition: \" + $('Code in JavaScript').item.json.position + \"\\nInterview duration: \" + $('Code in JavaScript').item.json.interview_duration_minutes + \" min\\n\\nINTERVIEW STRUCTURE\\n\" + $('Code in JavaScript').item.json.structure.map(b => b.block + \" (\" + b.duration_minutes + \" min): \" + b.notes).join('\\n') + \"\\n\\nKEY QUESTIONS\\n\" + $('Code in JavaScript').item.json.key_questions.map(q => \"• \" + q).join('\\n') + \"\\n\\nRED FLAGS TO CHECK\\n\" + $('Code in JavaScript').item.json.red_flags_to_check.map(r => \"• \" + r).join('\\n') + \"\\n\\nRECRUITER NOTES\\n\" + $('Code in JavaScript').item.json.recruiter_notes }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1376,
+        -96
+      ],
+      "id": "d9beae97-fea7-46ab-8d44-77e97060b1ae",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "aqhhJy8ETNMqURkJ",
+          "name": "Google Docs OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Create an event": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ab1d2cee-2340-430f-9930-baf3e9c81287",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4e8b59142df5dea7e7a6c4c7d70da13b20fdd6bf079477c755fdac10fe41a2f3"
+  },
+  "id": "cc9PAaQ6oePzzas1",
+  "tags": []
+}
